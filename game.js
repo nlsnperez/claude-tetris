@@ -253,6 +253,9 @@ function loop(ts) {
     }
   }
   draw();
+  // endGame() puede haberse llamado durante este frame (al bloquear la pieza);
+  // no se debe reprogramar el bucle o el juego seguiría corriendo.
+  if (gameOver) return;
   animId = requestAnimationFrame(loop);
 }
 
