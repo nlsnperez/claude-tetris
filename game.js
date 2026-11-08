@@ -13,6 +13,7 @@ const COLORS = [
   '#e57373', // Z - red
   '#7986cb', // J - indigo
   '#ffb74d', // L - orange
+  '#90a4ae', // NUT - acero (anillo 3x3)
 ];
 
 const PIECES = [
@@ -24,7 +25,14 @@ const PIECES = [
   [[5,5,0],[0,5,5],[0,0,0]],                  // Z
   [[6,0,0],[6,6,6],[0,0,0]],                  // J
   [[0,0,7],[7,7,7],[0,0,0]],                  // L
+  [[8,8,8],[8,0,8],[8,8,8]],                  // NUT - anillo 3x3 hueco
 ];
+
+// Tipos 1..7 son los tetrominos clasicos; el 8 es la pieza especial "tuerca",
+// un anillo 3x3 de 8 bloques con el centro hueco que aparece ocasionalmente.
+const TETROMINO_TYPES = 7;
+const NUT = 8;
+const NUT_CHANCE = 0.08; // ~1 de cada 12 piezas
 
 const LINE_SCORES = [0, 100, 300, 500, 800];
 
@@ -47,7 +55,9 @@ function createBoard() {
 }
 
 function randomPiece() {
-  const type = Math.floor(Math.random() * 7) + 1;
+  const type = Math.random() < NUT_CHANCE
+    ? NUT
+    : Math.floor(Math.random() * TETROMINO_TYPES) + 1;
   const shape = PIECES[type].map(row => [...row]);
   return { type, shape, x: Math.floor(COLS / 2) - Math.floor(shape[0].length / 2), y: 0 };
 }
